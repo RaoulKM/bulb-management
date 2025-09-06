@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Système de Gestion - Fabrique d'Ampoules</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="alert-container"></div>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-lightbulb"></i> Système de Gestion - Fabrique d'Ampoules</h1>
+            <p class="subtitle">Gestion de production et rémunération des employés</p>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('dashboard')"><i class="fas fa-chart-line"></i> Tableau de Bord</button>
+            <button class="nav-tab" onclick="showTab('employes')"><i class="fas fa-users"></i> Employés</button>
+            <button class="nav-tab" onclick="showTab('production')"><i class="fas fa-cogs"></i> Production</button>
+            <button class="nav-tab" onclick="showTab('paiements')"><i class="fas fa-money-check-alt"></i> Paiements</button>
+            <button class="nav-tab" onclick="showTab('rapports')"><i class="fas fa-file-alt"></i> Rapports</button>
+        </nav>
+
+        <div id="dashboard" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-employes">0</div>
+                    <div class="stat-label">Employés Actifs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="production-jour">0</div>
+                    <div class="stat-label">Ampoules Aujourd'hui</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="plaques-completes">0</div>
+                    <div class="stat-label">Plaques Complétées</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="quota-moyen">0%</div>
+                    <div class="stat-label">Quota Moyen Atteint</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-chart-bar"></i> Performance des Cellules</h3>
+                <div id="cellules-performance">
+                </div>
+            </div>
+        </div>
+
+        <div id="employes" class="tab-content">
+            <div class="card">
+                <div class="header-actions">
+                    <h3><i class="fas fa-user-tie"></i> Gestion des Employés</h3>
+                    <button class="btn-success" onclick="openModal('modal-employe')"><i class="fas fa-plus-circle"></i> Nouvel Employé</button>
+                </div>
+                <div class="table-responsive">
+                    <table id="table-employes">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nom Complet</th>
+                                <th>Cellule</th>
+                                <th>Quota Journalier</th>
+                                <th>Production J.</th>
+                                <th>Performance</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employes-tbody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="production" class="tab-content">
+            <div class="form-grid">
+                <div class="card">
+                    <h3><i class="fas fa-plus-square"></i> Saisie Production</h3>
+                    <form id="form-production">
+                        <div class="form-group">
+                            <label for="employe-production">Employé:</label>
+                            <select id="employe-production" required>
+                                <option value="">Sélectionner un employé</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="date-production">Date:</label>
+                            <input type="date" id="date-production" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ampoules-produites">Ampoules Produites:</label>
+                            <input type="number" id="ampoules-produites" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ampoules-defectueuses">Ampoules Défectueuses:</label>
+                            <input type="number" id="ampoules-defectueuses" min="0" value="0">
+                        </div>
+                        <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Enregistrer Production</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-tasks"></i> Détails des Plaques</h3>
+                    <div id="plaques-info">
+                        <p><strong>Plaques en cours:</strong> <span id="plaques-en-cours">0</span></p>
+                        <p><strong>Plaques complétées aujourd'hui:</strong> <span id="plaques-completees-jour">0</span></p>
+                        <p><strong>Prochaine plaque:</strong></p>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="width: 0%;"></div>
+                        </div>
+                        <small id="prochaine-plaque-details"></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="paiements" class="tab-content">
+            <div class="card">
+                <div class="header-actions">
+                    <h3><i class="fas fa-wallet"></i> Gestion des Paiements</h3>
+                    <button class="btn-primary" onclick="calculerSalaires()"><i class="fas fa-calculator"></i> Calculer Salaires du Mois</button>
+                </div>
+                <div class="table-responsive">
+                    <table id="table-paiements">
+                        <thead>
+                            <tr>
+                                <th>Employé</th>
+                                <th>Période</th>
+                                <th>Production</th>
+                                <th>% Quota</th>
+                                <th>Montant Dû</th>
+                                <th>Avances</th>
+                                <th>Solde Net</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="paiements-tbody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="rapports" class="tab-content">
+            <div class="card">
+                <h3><i class="fas fa-chart-pie"></i> Rapports et Analyses</h3>
+                <div class="form-grid">
+                    <div>
+                        <h4 style="margin-bottom: 15px;">Période d'analyse</h4>
+                        <div class="form-group">
+                            <label>Du:</label>
+                            <input type="date" id="date-debut-rapport">
+                        </div>
+                        <div class="form-group">
+                            <label>Au:</label>
+                            <input type="date" id="date-fin-rapport">
+                        </div>
+                        <button class="btn-primary" onclick="genererRapport()"><i class="fas fa-download"></i> Générer Rapport</button>
+                    </div>
+                    <div id="rapport-resultats" class="card">
+                        <h4>Résultats</h4>
+                        <div id="rapport-content" class="rapport-details">
+                            <p>Sélectionnez une période pour générer le rapport.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-employe" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-employe')">&times;</span>
+            <h3 style="margin-bottom: 20px;"><i class="fas fa-user-plus"></i> Nouvel Employé</h3>
+            <form id="form-employe">
+                <div class="form-group">
+                    <label for="nom-employe">Nom:</label>
+                    <input type="text" id="nom-employe" required>
+                </div>
+                <div class="form-group">
+                    <label for="prenom-employe">Prénom:</label>
+                    <input type="text" id="prenom-employe" required>
+                </div>
+                <div class="form-group">
+                    <label for="cellule-employe">Cellule:</label>
+                    <select id="cellule-employe" required>
+                        <option value="">Sélectionner une cellule</option>
+                        <option value="A">Cellule A</option>
+                        <option value="B">Cellule B</option>
+                        <option value="C">Cellule C</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="quota-employe">Quota Journalier:</label>
+                    <input type="number" id="quota-employe" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="taux-employe">Taux par Ampoule (FCFA):</label>
+                    <input type="number" id="taux-employe" min="0" step="0.01" required>
+                </div>
+                <button type="submit" class="btn-primary"><i class="fas fa-user-plus"></i> Ajouter Employé</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-paiement" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-paiement')">&times;</span>
+            <h3 style="margin-bottom: 20px;"><i class="fas fa-hand-holding-usd"></i> Enregistrer un Paiement</h3>
+            <form id="form-paiement">
+                <input type="hidden" id="paiement-id-input">
+                <div class="form-group">
+                    <label>Employé:</label>
+                    <input type="text" id="employe-paiement-nom" disabled>
+                </div>
+                <div class="form-group">
+                    <label>Montant total dû:</label>
+                    <input type="text" id="montant-du-input" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="avance-input">Montant de l'avance:</label>
+                    <input type="number" id="avance-input" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="solde-input">Montant du solde:</label>
+                    <input type="number" id="solde-input" min="0" required>
+                </div>
+                <button type="submit" class="btn-primary"><i class="fas fa-check-circle"></i> Enregistrer le Paiement</button>
+            </form>
+        </div>
+    </div>
+    
+    <div id="modal-infos-paiement" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-infos-paiement')">&times;</span>
+            <h3 style="margin-bottom: 20px;"><i class="fas fa-info-circle"></i> Détails du Paiement</h3>
+            <p><strong>Employé:</strong> <span id="info-employe-nom"></span></p>
+            <p><strong>Production Totale:</strong> <span id="info-production-totale"></span></p>
+            <p><strong>Taux:</strong> <span id="info-taux"></span></p>
+            <p><strong>Quota Atteint:</strong> <span id="info-quota"></span></p>
+            <p><strong>Montant Calculé:</strong> <span id="info-montant-initial"></span></p>
+            <p><strong>Avances Versées:</strong> <span id="info-avances"></span></p>
+            <p><strong>Solde Dû:</strong> <span id="info-solde"></span></p>
+            <p><strong>Statut:</strong> <span id="info-statut"></span></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

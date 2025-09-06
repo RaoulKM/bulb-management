@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "employeId": 1,
+    "annee": 2025,
+    "mois": 8,
+    "productionTotale": 0,
+    "pourcentageQuota": "0",
+    "montantCalcule": 0,
+    "avancesVersees": 0,
+    "soldeDu": 0,
+    "statut": "en attente"
+  }
+]

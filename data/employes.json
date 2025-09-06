@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "nom": "KOM",
+    "prenom": "Raoul",
+    "cellule": "A",
+    "quota": 320,
+    "taux": 20,
+    "statut": "actif"
+  },
+  {
+    "id": 2,
+    "nom": "Raoul",
+    "prenom": "Kom",
+    "cellule": "B",
+    "quota": 320,
+    "taux": 20,
+    "statut": "actif"
+  }
+]
