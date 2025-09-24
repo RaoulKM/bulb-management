@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "id": 1,
+    "employeId": 3,
+    "date": "2025-09-24",
+    "ampoules_valides": 200,
+    "defectueuses": 3
+  },
+  {
+    "id": 2,
+    "employeId": 1,
+    "date": "2025-09-24",
+    "ampoules_valides": 2200,
+    "defectueuses": 500
+  }
+]

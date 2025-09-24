@@ -4,11 +4,35 @@
     "employeId": 1,
     "annee": 2025,
     "mois": 8,
+    "productionTotale": 2200,
+    "pourcentageQuota": "28",
+    "montantCalcule": 44000,
+    "avancesVersees": 0,
+    "soldeDu": 0,
+    "statut": "paye"
+  },
+  {
+    "id": 2,
+    "employeId": 2,
+    "annee": 2025,
+    "mois": 8,
     "productionTotale": 0,
     "pourcentageQuota": "0",
     "montantCalcule": 0,
     "avancesVersees": 0,
     "soldeDu": 0,
+    "statut": "en attente"
+  },
+  {
+    "id": 3,
+    "employeId": 3,
+    "annee": 2025,
+    "mois": 8,
+    "productionTotale": 200,
+    "pourcentageQuota": "7",
+    "montantCalcule": 3000,
+    "avancesVersees": 0,
+    "soldeDu": 3000,
     "statut": "en attente"
   }
 ]
